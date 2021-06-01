@@ -32,11 +32,11 @@ def gitCheckout() {
 def buildImage(imageName) {
 
     echo "Building Image ${dockerAccount}/${imageName}"
-    sh "docker build -t ${dockerAccount}/${imageName} ."
+    sh "/usr/local/bin/docker build -t ${dockerAccount}/${imageName} ."
 
 }
 
 def scanImage(imageName) {
     echo "Scanning Image ${dockerAccount}/${imageName} using trivy"
-    sh "trivy ${dockerAccount}/${imageName}"
+    sh "/Users/hemanthboyapati/toolsdir/trivy ${dockerAccount}/${imageName}"
 }
