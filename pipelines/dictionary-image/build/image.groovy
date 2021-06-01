@@ -9,7 +9,9 @@ node {
         buildImage("dictionary")
     }
 
-
+    stage('scan Image') {
+        scanImage("dictionary")
+    }
 
 } //END of node(...)
 
@@ -25,7 +27,11 @@ def gitCheckout() {
 def buildImage(imageName) {
 
     echo "Building Image ${dockerAccount}/${imageName}"
-    sh "ls -lart"
-    //sh "docker build -t ${dockerAccount}/${imageName} ."
+    sh "docker build -t ${dockerAccount}/${imageName} ."
 
+}
+
+def scanImage(imageName) {
+    echo "Scanning Image ${dockerAccount}/${imageName} using trivy"
+    sh "trivy ${dockerAccount}/${imageName}"
 }
