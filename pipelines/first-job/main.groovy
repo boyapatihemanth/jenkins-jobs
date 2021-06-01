@@ -3,6 +3,6 @@ node {
     echo "stage-1"
   }
   stage('stage-2'){
-    echo "stage-2"
+    echo "stage-2 from git hub"
   }
 }
