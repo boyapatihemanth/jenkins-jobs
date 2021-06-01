@@ -1,0 +1,40 @@
+//def gitbranch = '*/'+git-branch
+node {
+     stage('Source') {
+         checkout([$class: 'GitSCM',
+                branches: [[name: "*/master"]],
+                doGenerateSubmoduleConfigurations: false,
+                extensions: [[$class: 'CleanCheckout']],
+                submoduleCfg: [],
+                userRemoteConfigs: [[credentialsId: 'git-cred', url: "https://github.com/boyapatihemanth/jenkins-jobs.git"]]
+                ])
+          filesList = getChangedFilesList();
+          print(filesList);
+
+      }
+      stage('Job Build') {
+          try {
+              jobDsl targets: dslScripts
+          }
+          catch(err){
+              echo err.toString()
+              throw err
+          }
+      }
+}
+
+@NonCPS
+        String getChangedFilesList() {
+
+        changedFiles = []
+        for (changeLogSet in currentBuild.changeSets) {
+            for (entry in changeLogSet.getItems()) { // for each commit in the detected changes
+                for (file in entry.getAffectedFiles()) {
+                    changedFiles.add(file.getPath()) // add changed file to list
+                }
+            }
+        }
+
+        return changedFiles
+
+    }
