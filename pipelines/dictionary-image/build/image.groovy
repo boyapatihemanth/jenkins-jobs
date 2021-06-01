@@ -35,5 +35,5 @@ def buildImage(imageName) {
 
 def scanImage(imageName) {
     echo "Scanning Image ${dockerAccount}/${imageName} using trivy"
-    sh "trivy ${dockerAccount}/${imageName}"
+    sh "/usr/local/bin/trivy ${dockerAccount}/${imageName}"
 }
