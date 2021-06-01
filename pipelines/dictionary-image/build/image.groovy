@@ -1,6 +1,10 @@
 dockerAccount = "boyapatihemanth"
+
 node {
-    $env.PATH="/Users/hemanthboyapati/toolsdir/google-cloud-sdk/bin://anaconda3/bin://anaconda3/condabin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/hemanthboyapati/toolsdir:/Users/hemanthboyapati/toolsdir/maven/apache-maven-3.6.3/bin:/usr/local/go/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands"
+    environment {
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/hemanthboyapati/toolsdir"
+    }
+
     stage('Checkout') {
       deleteDir()
       gitCheckout()
