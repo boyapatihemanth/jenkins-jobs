@@ -1,18 +1,25 @@
-//def gitbranch = '*/'+git-branch
+/*
+* Parameters:
+* gitBranch: master
+* gitUrl: https://github.com/boyapatihemanth/jenkins-jobs.git
+* dslScripts: jobs/**/*.groovy
+*/
+
 node {
      stage('Source') {
+         //gitBranch = "master"
+         //gitUrl = "https://github.com/boyapatihemanth/jenkins-jobs.git"
          checkout([$class: 'GitSCM',
-                branches: [[name: "*/master"]],
-                doGenerateSubmoduleConfigurations: false,
+                branches: [[name: gitBranch]],
                 extensions: [[$class: 'CleanCheckout']],
-                submoduleCfg: [],
-                userRemoteConfigs: [[credentialsId: 'git-cred', url: "https://github.com/boyapatihemanth/jenkins-jobs.git"]]
+                userRemoteConfigs: [[url: gitUrl]]
                 ])
           filesList = getChangedFilesList();
           print(filesList);
 
       }
       stage('Job Build') {
+          //dslScripts = "jobs/**/*.groovy"
           try {
               jobDsl targets: dslScripts
           }
@@ -24,17 +31,14 @@ node {
 }
 
 @NonCPS
-        String getChangedFilesList() {
-
-        changedFiles = []
-        for (changeLogSet in currentBuild.changeSets) {
-            for (entry in changeLogSet.getItems()) { // for each commit in the detected changes
-                for (file in entry.getAffectedFiles()) {
-                    changedFiles.add(file.getPath()) // add changed file to list
-                }
+String getChangedFilesList() {
+    changedFiles = []
+    for (changeLogSet in currentBuild.changeSets) {
+        for (entry in changeLogSet.getItems()) { // for each commit in the detected changes
+            for (file in entry.getAffectedFiles()) {
+                changedFiles.add(file.getPath()) // add changed file to list
             }
         }
-
-        return changedFiles
-
     }
+    return changedFiles
+}
